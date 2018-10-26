@@ -1,3 +1,4 @@
+include ./mixins/event.pug
 doctype html
 html(lang="en")
   head
@@ -34,6 +35,8 @@ html(lang="en")
               a(href='/accounts') Accounts
             li
               a(href='/tx/pending') Pending Tx
+            li
+              a(href='/events') Events
             li.dropdown
               a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
                 | Tools

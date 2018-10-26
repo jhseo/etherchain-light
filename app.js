@@ -12,12 +12,43 @@ var account = require('./routes/account');
 var accounts = require('./routes/accounts');
 var contract = require('./routes/contract');
 var signature = require('./routes/signature');
+var event = require('./routes/event');
+var events = require('./routes/events');
 var search = require('./routes/search');
 
 var config = new(require('./config.js'))();
+var Datastore = require('nedb-core')
+var eventdb = new Datastore({ filename: './data.db', autoload: true });
+
+eventdb.ensureIndex({ fieldName: 'balance' }, function (err) {
+  if (err) {
+    console.log("Error creating balance db index:", err);
+  }
+});
+
+eventdb.ensureIndex({ fieldName: 'timestamp' }, function (err) {
+  if (err) {
+    console.log("Error creating timestamp db index:", err);
+  }
+});
+
+eventdb.ensureIndex({ fieldName: 'args._from' }, function (err) {
+  if (err) {
+    console.log("Error creating _from db index:", err);
+  }
+});
+
+eventdb.ensureIndex({ fieldName: 'args._to' }, function (err) {
+  if (err) {
+    console.log("Error creating _to db index:", err);
+  }
+});
+
+var exporterService = require('./services/exporter.js');
+var exporter = new exporterService(config, eventdb);
 
 var levelup = require('levelup');
-var db = levelup('./data');
+var blockdb = levelup('./data');
 
 var app = express();
 
@@ -25,7 +56,8 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.set('config', config);
-app.set('db', db);
+app.set('eventdb', eventdb);
+app.set('blockdb', blockdb);
 app.set('trust proxy', true);
 
 // uncomment after placing your favicon in /public
@@ -52,6 +84,8 @@ app.use('/account', account);
 app.use('/accounts', accounts);
 app.use('/contract', contract);
 app.use('/signature', signature);
+app.use('/event', event);
+app.use('/events', events);
 app.use('/search', search);
 
 // catch 404 and forward to error handler
