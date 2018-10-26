@@ -4,16 +4,22 @@ var router = express.Router();
 var async = require('async');
 var Web3 = require('web3');
 
-router.get('/:account', function(req, res, next) {
-  
-  var config = req.app.get('config');  
+router.get('/:account/:offset?', function(req, res, next) {
+  var config = req.app.get('config');
   var web3 = new Web3();
   web3.setProvider(config.provider);
-  
-  var db = req.app.get('db');
-  
+
+  var eventdb = req.app.get('eventdb');
+  var blockdb = req.app.get('blockdb');
+
+  if (!req.params.offset) {
+    req.params.offset = 0;
+  } else {
+    req.params.offset = parseInt(req.params.offset);
+  }
+
   var data = {};
-  
+
   async.waterfall([
     function(callback) {
       web3.eth.getBlock("latest", false, function(err, result) {
@@ -27,11 +33,8 @@ router.get('/:account', function(req, res, next) {
       } else {
         data.fromBlock = 0x00;
       }
-      web3.eth.getBalance(req.params.account, function(err, balance) {
-        callback(err, balance);
-      });
-    }, function(balance, callback) {
-      data.balance = balance;
+      callback();
+    }, function(callback) {
       web3.eth.getCode(req.params.account, function(err, code) {
         callback(err, code);
       });
@@ -40,23 +43,20 @@ router.get('/:account', function(req, res, next) {
       if (code !== "0x") {
         data.isContract = true;
       }
-      
-      db.get(req.params.account.toLowerCase(), function(err, value) {
+
+      blockdb.get(req.params.account.toLowerCase(), function(err, value) {
         callback(null, value);
       });
     }, function(source, callback) {
-      
       if (source) {
         data.source = JSON.parse(source);
-        
+
         data.contractState = [];
         if (!data.source.abi) {
           return callback();
         }
         var abi = JSON.parse(data.source.abi);
         var contract = web3.eth.contract(abi).at(req.params.account);
-        
-        
         async.eachSeries(abi, function(item, eachCallback) {
           if (item.type === "function" && item.inputs.length === 0 && item.constant) {
             try {
@@ -74,12 +74,10 @@ router.get('/:account', function(req, res, next) {
         }, function(err) {
           callback(err);
         });
-        
+
       } else {
         callback();
       }
-      
-      
     }, function(callback) {
       web3.trace.filter({ "fromBlock": "0x" + data.fromBlock.toString(16), "fromAddress": [ req.params.account ] }, function(err, traces) {
         callback(err, traces);
@@ -94,47 +92,63 @@ router.get('/:account', function(req, res, next) {
     if (err) {
       return next(err);
     }
-    
+
     data.address = req.params.account;
     data.tracesReceived = tracesReceived;
-    
+
     var blocks = {};
     data.tracesSent.forEach(function(trace) {
       if (!blocks[trace.blockNumber]) {
         blocks[trace.blockNumber] = [];
       }
-      
+
       blocks[trace.blockNumber].push(trace);
     });
     data.tracesReceived.forEach(function(trace) {
       if (!blocks[trace.blockNumber]) {
         blocks[trace.blockNumber] = [];
       }
-      
+
       blocks[trace.blockNumber].push(trace);
     });
-    
+
     data.tracesSent = null;
     data.tracesReceived = null;
-    
+
     data.blocks = [];
     var txCounter = 0;
     for (var block in blocks) {
       data.blocks.push(blocks[block]);
       txCounter++;
     }
-    
+
     if (data.source) {
       data.name = data.source.name;
     } else if (config.names[data.address]) {
       data.name = config.names[data.address];
     }
-    
+
     data.blocks = data.blocks.reverse().splice(0, 100);
-    
-    res.render('account', { account: data });
+
+    eventdb.find({_id: req.params.account}).exec(function (err, account) {
+      if (err) {
+        return next(err);
+      }
+
+      // if (account.length === 0 || !account[0]._id) {
+      //   return next({message: "Account not found!"});
+      // }
+      if (account.length === 0 || !account[0]._id) {
+        data.balance = 0;
+      } else {
+        data.balance = account[0].balance;
+      }
+
+      eventdb.find( {$or: [{ "args._from": req.params.account }, { "args._to": req.params.account }] }).sort({ timestamp: -1 }).skip(req.params.offset).limit(50).exec(function(err, events) {
+        res.render('address', { account: data, events: events, offset: req.params.offset, stepSize: 50 });
+      });
+    });
   });
-  
 });
 
 module.exports = router;

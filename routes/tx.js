@@ -61,9 +61,9 @@ router.get('/:tx', function(req, res, next) {
   var config = req.app.get('config');  
   var web3 = new Web3();
   web3.setProvider(config.provider);
-  
-  var db = req.app.get('db');
-  
+
+  var db = req.app.get('blockdb');
+
   async.waterfall([
     function(callback) {
       web3.eth.getTransaction(req.params.tx, function(err, result) {
