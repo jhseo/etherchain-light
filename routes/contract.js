@@ -127,7 +127,7 @@ router.post('/verify', function(req, res, next) {
       });
     }, function(contractData, callback) {
       // Saving contract data
-      var db = req.app.get('db');
+      var db = req.app.get('blockdb');
       db.put(contractAddress, JSON.stringify(contractData), function(err) {
         callback(err);
       });

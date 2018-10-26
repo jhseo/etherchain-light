@@ -15,7 +15,7 @@ router.post('/', function(req, res, next) {
 	} else if (searchString.length == 66) {
 		res.redirect('/tx/' + searchString);
 	} else if (searchString.length == 42) {
-		res.redirect('/account/' + searchString);
+		res.redirect('/address/' + searchString);
 	} else {
     return next({ message: "Error: Invalid search string!" });
   }
