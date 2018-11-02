@@ -1,0 +1,42 @@
+extends layout
+
+block content
+  h3 Transactions
+  
+  if txs.length === 0
+    p Currently there are no transactions
+  else
+    table.table
+      thead
+        tr
+          th Hash
+          th BlockNumber
+          th From
+          th To
+      tbody
+        for tx in txs
+          tr
+            td
+              if tx.transactionHash != ''
+                a(href="/tx/" + tx.transactionHash)  #{tx.transactionHash.substr(0, 20)}...
+              else
+                None
+            td
+              a(href="/block/" + tx.blockNumber) #{tx.blockNumber}
+            td
+              if tx.from != ''
+                a(href="/address/" + tx.from) #{nameformatter.format(tx.from)}
+              else
+                None
+            td
+              if tx.isContract != ''
+                if tx.isContract
+                  a(href="/address/" + tx.to) #{nameformatter.format(tx.to)}
+                else
+                  | New Contract 
+                  a(href="/address/" + tx.to) #{tx.to} 
+              else
+                  None
+    a.btn.btn-default(href="/transactions/" + lastBlock) Next Page
+            
+  
