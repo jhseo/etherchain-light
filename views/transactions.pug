@@ -13,30 +13,32 @@ block content
           th BlockNumber
           th From
           th To
+          th Date
       tbody
         for tx in txs
           tr
             td
-              if tx.transactionHash != ''
+              if tx.transactionHash !== ''
                 a(href="/tx/" + tx.transactionHash)  #{tx.transactionHash.substr(0, 20)}...
               else
-                None
+                | None
             td
               a(href="/block/" + tx.blockNumber) #{tx.blockNumber}
             td
-              if tx.from != ''
+              if tx.from !== ''
                 a(href="/address/" + tx.from) #{nameformatter.format(tx.from)}
               else
-                None
+                | None
             td
-              if tx.isContract != ''
-                if tx.isContract
+              if !tx.isContract
+                if tx.transactionHash !== ''
                   a(href="/address/" + tx.to) #{nameformatter.format(tx.to)}
                 else
-                  | New Contract 
-                  a(href="/address/" + tx.to) #{tx.to} 
+                  | None
               else
-                  None
+                | New Contract 
+                a(href="/address/" + tx.to) #{tx.to} 
+            td #{moment(tx.timestamp * 1000).fromNow()}
     a.btn.btn-default(href="/transactions/" + lastBlock) Next Page
             
   

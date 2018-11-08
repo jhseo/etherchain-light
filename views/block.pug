@@ -69,16 +69,12 @@ block content
             td
               if tx.error
                 span(style="color: red", data-toggle="tooltip", data-placement="left", title=tx.error).glyphicon.glyphicon-warning-sign
-              a(href="/tx/" + tx.hash)  #{tx.hash.substr(0, 10)}...
+              a(href="/tx/" + tx.hash)  #{tx.hash.substr(0, 20)}...
             td Tx
             td
               a(href="/address/" + tx.from) #{nameformatter.format(tx.from)}
             td
-              if tx.to
-                a(href="/address/" + tx.to) #{nameformatter.format(tx.to)}
-              else
-                | New Contract
-                a(href="/address/" + tx.to) #{tx.to} 
+              a(href="/address/" + tx.to) #{nameformatter.format(tx.to)}
           for trace in tx.traces
             tr
               td.text-right

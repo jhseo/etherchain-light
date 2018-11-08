@@ -27,6 +27,7 @@ router.get('/:offset?', function(req, res, next) {
       console.log("lastBlock: " + lastBlock);
       async.times(blockCount, function(n, next) {
         web3.eth.getBlock(lastBlock - n, true, function(err, block) {
+          console.log("block")
           console.log(block)
           blocks.push(block);
           next(err, block);
@@ -49,6 +50,7 @@ router.get('/:offset?', function(req, res, next) {
       data.blockNumber = block.number;
       data.from = '';
       data.to = '';
+      data.timestamp = block.timestamp;
       transactions.push(data);
 
       block.transactions.forEach(function(tx) {

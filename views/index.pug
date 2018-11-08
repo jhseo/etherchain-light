@@ -11,19 +11,21 @@ block content
           th Hash
           th From
           th To
+          th Date
       tbody
         for tx in txs
           tr
             td
-              a(href="/tx/" + tx.hash) #{tx.hash.substr(0,20)}...
+              a(href="/tx/" + tx.transaction.hash) #{tx.transaction.hash.substr(0,20)}...
             td
-              a(href="/address/" + tx.from) #{nameformatter.format(tx.from)}
+              a(href="/address/" + tx.transaction.from) #{nameformatter.format(tx.transaction.from)}
             td
-              if tx.to
-                a(href="/address/" + tx.to) #{nameformatter.format(tx.to)}
+              if !tx.isContract
+                a(href="/address/" + tx.transaction.to) #{nameformatter.format(tx.transaction.to)}
               else
                 | New Contract
-                a(href="/address/" + tx.to) #{tx.to} 
+                a(href="/address/" + tx.transaction.to) #{tx.transaction.to} 
+            td #{moment(tx.timestamp * 1000).fromNow()}
   h3 Recent blocks
   table.table
     thead

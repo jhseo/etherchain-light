@@ -41,7 +41,16 @@ router.get('/', function(req, res, next) {
     var txs = [];
     blocks.forEach(function(block) {
       block.transactions.forEach(function(tx) {
-        txs.push(tx);
+        var data = {};
+        data.timestamp = block.timestamp;
+        data.transaction = tx;
+        data.isContract = false;
+        web3.eth.getCode(tx.to, function(err, code) {
+          if (code !== "0x") {
+            data.isContract = true;
+          }
+        });
+        txs.push(data);
       });
     });
     res.render('index', { blocks: blocks.slice(0, 21), txs: txs });

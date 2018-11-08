@@ -22,9 +22,6 @@ block content
             td
               a(href="/address/" + tx.from) #{nameformatter.format(tx.from)}
             td
-              if tx.to
-                a(href="/address/" + tx.to) #{nameformatter.format(tx.to)}
-              else
-                | New Contract
+              a(href="/address/" + tx.to) #{nameformatter.format(tx.to)}
             td #{ethformatter(tx.value)}
             td #{ethformatter(tx.gasPrice)}
