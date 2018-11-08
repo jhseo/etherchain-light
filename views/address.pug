@@ -27,11 +27,6 @@ block content
           .row
             .col-md-10
               h3 Recent Activity
-            .col-md-1
-              if offset - stepSize >= 0
-                a.btn.btn-default(href="/address/" + account._id + "/" + (offset - stepSize)) Previous
-            .col-md-1
-                a.btn.btn-default(href="/address/" + account._id + "/" + (offset + stepSize)) Next
           .row
             .col-md-12
               .table-responsive
