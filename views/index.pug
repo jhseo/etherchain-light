@@ -3,7 +3,7 @@ extends layout
 block content
   h3 Recent Transactions
   if txs.length === 0
-    p No transactions during the last 10 blocks
+    p No transactions during the last 500 blocks
   else
     table.table
       thead
@@ -11,12 +11,11 @@ block content
           th Hash
           th From
           th To
-          th Amount
       tbody
         for tx in txs
           tr
             td
-              a(href="/tx/" + tx.hash) #{tx.hash.substr(0,10)}...
+              a(href="/tx/" + tx.hash) #{tx.hash.substr(0,20)}...
             td
               a(href="/address/" + tx.from) #{nameformatter.format(tx.from)}
             td
@@ -24,16 +23,16 @@ block content
                 a(href="/address/" + tx.to) #{nameformatter.format(tx.to)}
               else
                 | New Contract
-            td #{ethformatter(tx.value)}
+                a(href="/address/" + tx.to) #{tx.to} 
   h3 Recent blocks
   table.table
     thead
       tr
         th Number
-        th Miner
-        th Timestamp
+        th Sealer
         th # Tx
         th # Uncles
+        th Date
     tbody
       for block in blocks
         tr
@@ -41,6 +40,6 @@ block content
             a(href="/block/" + block.number) #{block.number}
           td
             a(href="/address/" + block.author) #{nameformatter.format(block.author)}
-          td #{moment.unix(block.timestamp).format()}
           td #{block.transactions.length}
           td #{block.uncles.length}
+          td #{moment(block.timestamp * 1000).fromNow()}

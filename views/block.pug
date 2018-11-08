@@ -63,7 +63,6 @@ block content
           th Type
           th From
           th To
-          th Amount
       tbody
         for tx in block.transactions
           tr
@@ -79,7 +78,7 @@ block content
                 a(href="/address/" + tx.to) #{nameformatter.format(tx.to)}
               else
                 | New Contract
-            td #{ethformatter(tx.value)}
+                a(href="/address/" + tx.to) #{tx.to} 
           for trace in tx.traces
             tr
               td.text-right
@@ -92,16 +91,13 @@ block content
                   a(href="/address/" + trace.action.from) #{nameformatter.format(trace.action.from)}
                 td                   
                   a(href="/address/" + trace.action.to) #{nameformatter.format(trace.action.to)}
-                td #{ethformatter(trace.action.value)}
               else if trace.type === "create"
                 td
                   a(href="/address/" + trace.action.from) #{nameformatter.format(trace.action.from)}
                 td
                   a(href="/address/" + trace.result.address) #{nameformatter.format(trace.result.address)}
-                td #{ethformatter(trace.action.value)}
               else if trace.type === "suicide"
                 td
                   a(href="/address/" + trace.action.address) #{nameformatter.format(trace.action.address)}
                 td
                   a(href="/address/" + trace.action.refundAddress) #{nameformatter.format(trace.action.refundAddress)}
-                td #{ethformatter(trace.action.balance)}
