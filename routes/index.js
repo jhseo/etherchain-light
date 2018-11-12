@@ -45,11 +45,13 @@ router.get('/', function(req, res, next) {
         data.timestamp = block.timestamp;
         data.transaction = tx;
         data.isContract = false;
-        web3.eth.getCode(tx.to, function(err, code) {
-          if (code !== "0x") {
-            data.isContract = true;
-          }
-        });
+        if (tx.to) {
+          web3.eth.getCode(tx.to, function(err, code) {
+            if (code !== "0x") {
+              data.isContract = true;
+            }
+          });
+        }
         txs.push(data);
       });
     });
