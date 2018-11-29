@@ -56,12 +56,14 @@ router.get('/:offset?', function(req, res, next) {
         data.transactionHash = tx.hash;
         data.blockNumber = tx.blockNumber;
         data.from = tx.from;
-        data.to = tx.to;
-        web3.eth.getCode(tx.to, function(err, code) {
-          if (code !== "0x") { // contract
-            data.isContract = true
-          }
-        });
+        if (tx.to) {
+          data.to = tx.to;
+          web3.eth.getCode(tx.to, function(err, code) {
+            if (code !== "0x") { // contract
+              data.isContract = true
+            }
+          });
+        }
       });
     });
     
