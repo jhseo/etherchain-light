@@ -24,11 +24,8 @@ router.get('/:offset?', function(req, res, next) {
     }, function(lastBlock, callback) {
       var blocks = [];
       var blockCount = 20;
-      console.log("lastBlock: " + lastBlock);
       async.times(blockCount, function(n, next) {
         web3.eth.getBlock(lastBlock - n, true, function(err, block) {
-          console.log("block")
-          console.log(block)
           blocks.push(block);
           next(err, block);
         });
@@ -54,7 +51,6 @@ router.get('/:offset?', function(req, res, next) {
       transactions.push(data);
 
       block.transactions.forEach(function(tx) {
-        console.log(tx)
         
         data.isContract = tx.data !== '0x';
         data.transactionHash = tx.hash;
@@ -69,7 +65,6 @@ router.get('/:offset?', function(req, res, next) {
       });
     });
     
-    console.log(transactions);
 
     lastBlock = transactions[transactions.length - 1].blockNumber - 1;
    
