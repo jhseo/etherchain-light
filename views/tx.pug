@@ -22,10 +22,14 @@ block content
     tr
       td To:
       td
-        if tx.to
-          a(href="/address/" + tx.to) #{nameformatter.format(tx.to)}
+        if !tx.creates
+          if tx.transactionHash !== ''
+            a(href="/address/" + tx.to) #{nameformatter.format(tx.to)}
+          else
+            | None
         else
-          | New Contract
+          | New Contract <br>
+          a(href="/address/" + tx.creates) #{nameformatter.format(tx.creates)}
     tr
       td Nonce:
       td #{tx.nonce}

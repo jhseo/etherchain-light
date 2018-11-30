@@ -20,11 +20,11 @@ block content
             td
               a(href="/address/" + tx.transaction.from) #{nameformatter.format(tx.transaction.from)}
             td
-              if !tx.isContract
+              if !tx.transaction.creates
                 a(href="/address/" + tx.transaction.to) #{nameformatter.format(tx.transaction.to)}
               else
-                | New Contract
-                a(href="/address/" + tx.transaction.to) #{tx.transaction.to} 
+                | New Contract <br>
+                a(href="/address/" + tx.transaction.creates) #{tx.transaction.creates} 
             td #{moment(tx.timestamp * 1000).fromNow()}
   h3 Recent blocks
   table.table

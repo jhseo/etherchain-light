@@ -52,17 +52,15 @@ router.get('/:offset?', function(req, res, next) {
 
       block.transactions.forEach(function(tx) {
         
-        data.isContract = tx.data !== '0x';
+        //data.isContract = tx.data !== '0x';
         data.transactionHash = tx.hash;
         data.blockNumber = tx.blockNumber;
         data.from = tx.from;
-        if (tx.to) {
+        if (tx.creates) {
+          data.isContract = true
+          data.to = tx.creates
+        } else if (tx.to) {
           data.to = tx.to;
-          web3.eth.getCode(tx.to, function(err, code) {
-            if (code !== "0x") { // contract
-              data.isContract = true
-            }
-          });
         }
       });
     });
