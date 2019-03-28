@@ -50,13 +50,7 @@ html(lang="en")
                   a(href='/contract/verify') Verify Contract 
                 li
                   a(href='/signature/verify') Verify Signature                
-              
-          form.navbar-form.navbar-right(action="/search", method="POST")
-            .form-group
-              input.form-control#search(type='text', placeholder='Block / Tx / Account', name='search')
-            |  
-            button.btn.btn-default(type='submit') Submit
-    hr
+    p
     .container      
       block content
     script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js')

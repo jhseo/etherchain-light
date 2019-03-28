@@ -19,7 +19,7 @@ router.get('/', function(req, res, next) {
     }, function(lastBlock, callback) {
       var blocks = [];
 
-      var blockCount = 50;
+      var blockCount = 20;
 
       if (lastBlock.number - blockCount < 0) {
         blockCount = lastBlock.number + 1;
