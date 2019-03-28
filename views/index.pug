@@ -2,12 +2,13 @@ extends layout
 
 block content
   .row
-    .col-md-10
+    .col-md-13
       form(action="/search", method="POST")
         .form-group
-          input.form-control#search(type='text', placeholder='Block / Tx / Address', name='search')
-    .col-md-2
-      button.btn.btn-default(type='submit') Search
+          .col-md-10
+            input.form-control#search(type='text', placeholder='Block / Tx / Address', name='search')
+          .col-md-1
+            button.btn.btn-default(type='submit') Search
   .row
     .col-md-5   
       h3 Latest blocks
