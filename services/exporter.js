@@ -26,12 +26,12 @@ var exporter = function(config, db) {
     });
 
     if (log.event === "Transfer") {
-      self.exportBalance(log.args._from);
-      self.exportBalance(log.args._to);
+      self.exportBalance(log.args.from);
+      self.exportBalance(log.args.to);
     }
     if (log.event === "Approval") {
-      self.exportBalance(log.args._owner);
-      self.exportBalance(log.args._spender);
+      self.exportBalance(log.args.owner);
+      self.exportBalance(log.args.spender);
     }
   });
 
@@ -46,13 +46,13 @@ var exporter = function(config, db) {
 
     logs.forEach(function(log) {
       if (log.event === "Transfer") {
-        accounts[log.args._from] = log.args._from;
-        accounts[log.args._to] = log.args._to;
+        accounts[log.args.from] = log.args.from;
+        accounts[log.args.to] = log.args.to;
       }
 
       if (log.event === "Approval") {
-        accounts[log.args._owner] = log.args._owner;
-        accounts[log.args._spender] = log.args._spender;
+        accounts[log.args.owner] = log.args.owner;
+        accounts[log.args.spender] = log.args.spender;
       }
     });
 
@@ -84,8 +84,8 @@ var exporter = function(config, db) {
 
       log.timestamp = block.timestamp;
 
-      if (log.args && log.args._value) {
-        log.args._value = log.args._value.toNumber();
+      if (log.args && log.args.value) {
+        log.args.value = log.args.value.toNumber();
       }
 
       self.db.insert(log, function(err, newLogs) {
