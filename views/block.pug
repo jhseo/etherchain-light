@@ -29,12 +29,6 @@ block content
       td Gas Used:
       td #{numeral(block.gasUsed).format()}
     tr
-      td Difficulty:
-      td #{numeral(block.difficulty).format()}
-    tr
-      td Total Difficulty:
-      td #{numeral(block.totalDifficulty).format()}
-    tr
       td Timestamp:
       td #{moment.unix(block.timestamp).format()} (#{moment.unix(block.timestamp).fromNow()})
     tr
