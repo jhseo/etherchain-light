@@ -20,15 +20,13 @@ block content
               td
                 p
                   a(href="/block/" + block.number) #{block.number}
-                p
-                  #{moment(block.timestamp * 1000).fromNow()}
+                p #{moment(block.timestamp * 1000).fromNow()}
               td
                 p
                   | Sealer 
                   a(href="/address/" + block.author) #{nameformatter.format(block.author)}
-                p
-                  #{block.transactions.length}
-                  | Txns
+                p #{block.transactions.length}
+                  |  Txns
     .col-md-1
       p
     .col-md-5   
@@ -46,8 +44,7 @@ block content
                   td
                     p
                       a(href="/tx/" + tx.transaction.hash) #{tx.transaction.hash.substr(0,20)}...
-                    p
-                      #{moment(tx.timestamp * 1000).fromNow()}
+                    p #{moment(tx.timestamp * 1000).fromNow()}
                   td
                     p
                       | From 

@@ -18,7 +18,15 @@ var config = function () {
   this.tokenDescription = "JH Token";
   this.tokenTotalSupply = -1;
   this.title = "Token Explorer"
-  this.footerUrl = "https://github.com/jhseo/etherchain-light"
+  this.company = "JH company"
+  this.homepage = "https://github.com/jhseo/etherchain-light"
+  this.telegramUrl = "https://github.com/jhseo/etherchain-light"
+  this.kakaotalkUrl = "https://github.com/jhseo/etherchain-light"
+  this.mediumUrl = "https://github.com/jhseo/etherchain-light"
+  this.githubUrl = "https://github.com/jhseo/etherchain-light"
+  this.youtubeUrl = "https://github.com/jhseo/etherchain-light"
+  this.contactEmail = "sjh7893@gmail.com"
+  this.copyright = "© 2018-2019 JH Company. All rights reserved"
 
   this.exportStartBlock = 0; // Start block for the historic export (set to 0 for a full export)
 

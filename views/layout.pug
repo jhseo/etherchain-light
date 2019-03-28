@@ -63,5 +63,30 @@ html(lang="en")
     div.container
       hr
       footer
+        .row
+          if config.telegramUrl != null
+            .col-md-2
+              a(href=config.telegramUrl) Telegram Channel
+          if config.kakaotalkUrl != null
+            .col-md-1
+              a(href=config.kakaotalkUrl) Kakaotalk
+          if config.mediumUrl != null
+            .col-md-1
+              a(href=config.mediumUrl) Medium
+          if config.githubUrl != null
+            .col-md-1
+              a(href=config.githubUrl) Github
+          if config.youtubeUrl != null
+            .col-md-1
+              a(href=config.youtubeUrl) Youtube
         p
-          a(href=config.footerUrl) #{config.title}
+        .row
+          if config.homepage != null && config.company != null
+            .col-md-2
+               a(href=config.homepage) #{config.company}
+          if config.contactEmail != null
+            .col-md-3
+              | Contact | #{config.contactEmail}              
+          if config.copyright != null
+            .col-md-3
+            p #{config.copyright}
