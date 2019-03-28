@@ -17,6 +17,8 @@ var config = function () {
   this.tokenName = "JHToken";
   this.tokenDescription = "JH Token";
   this.tokenTotalSupply = -1;
+  this.title = "Token Explorer"
+  this.footerUrl = "https://github.com/jhseo/etherchain-light"
 
   this.exportStartBlock = 0; // Start block for the historic export (set to 0 for a full export)
 
