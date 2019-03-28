@@ -3,7 +3,7 @@ extends layout
 block content
   .row
     .col-md-10
-      h3 Accounts (#{accounts.length})
+      h3 Accounts
     .col-md-12
       .table-responsive
         table.table
@@ -16,9 +16,10 @@ block content
                 a(href="/address/" + account._id) #{account._id}
               td #{tokenformatter.format(account.balance)}
   .row
+    .col-md-10
     if offset - stepSize >= 0
       .col-md-1
         a.btn.btn-default(href="/accounts/" + (offset - stepSize)) Previous
-    .col-md-1
+    .col-md-1.pull-right
         if accounts.length == stepSize
           a.btn.btn-default(href="/accounts/" + (offset + stepSize)) Next

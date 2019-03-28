@@ -9,23 +9,25 @@ var abiDecoder = require('abi-decoder');
 router.get('/:offset?', function(req, res, next) {
   
   var config = req.app.get('config');  
+  var stepSize = 50;
   var web3 = new Web3();
   web3.setProvider(config.provider);
+  
+  if (!req.params.offset) {
+    req.params.offset = 0;
+  } else {
+    req.params.offset = parseInt(req.params.offset);
+  }
   
   async.waterfall([
     function(callback) {
       web3.eth.getBlock("latest", false, function(err, result) {
-        if (!req.params.offset) {
-          callback(err, result.number);
-        } else {
-          callback(err, req.params.offset);
-        }
+        callback(err, result.number);
       });
     }, function(lastBlock, callback) {
       var blocks = [];
-      var blockCount = 20;
-      async.times(blockCount, function(n, next) {
-        web3.eth.getBlock(lastBlock - n, true, function(err, block) {
+      async.times(stepSize, function(n, next) {
+        web3.eth.getBlock(lastBlock - n - req.params.offset, true, function(err, block) {
           blocks.push(block);
           next(err, block);
         });
@@ -65,10 +67,9 @@ router.get('/:offset?', function(req, res, next) {
       });
     });
     
-
-    lastBlock = transactions[transactions.length - 1].blockNumber - 1;
+    //lastBlock = transactions[transactions.length - 1].blockNumber - 1;
    
-    res.render('transactions', { txs: transactions, lastBlock: lastBlock });
+    res.render('transactions', { txs: transactions, offset: req.params.offset, stepSize: stepSize });
   });
 });
 

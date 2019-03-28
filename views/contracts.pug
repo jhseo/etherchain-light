@@ -16,4 +16,8 @@ block content
               td
                 a(href="/address/" + account.address) #{nameformatter.format(account.address)}
               td #{tokenformatter.format(account.balance)}
-  a.btn.btn-default(href="/contracts/" + lastAccount) Next
+  .row            
+    .col-md-10
+    if accounts.length >= 20
+      .col-md-1.pull-right
+        a.btn.btn-default(href="/contracts/" + lastAccount) Next

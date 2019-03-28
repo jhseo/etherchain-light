@@ -16,8 +16,9 @@ block content
           for event in events
             +event_row(event)
   .row
+    .col-md-10
     if offset - stepSize >= 0
       .col-md-1
         a.btn.btn-default(href="/events/" + (offset - stepSize)) Previous
-    .col-md-1
+    .col-md-1.pull-right
         a.btn.btn-default(href="/events/" + (offset + stepSize)) Next

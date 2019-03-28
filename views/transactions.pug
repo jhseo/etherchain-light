@@ -39,6 +39,12 @@ block content
                 | New Contract <br>
                 a(href="/address/" + tx.to) #{tx.to} 
             td #{moment(tx.timestamp * 1000).fromNow()}
-    a.btn.btn-default(href="/transactions/" + lastBlock) Next
+  .row
+    .col-md-10
+    if offset - stepSize >= 0
+      .col-md-1
+        a.btn.btn-default(href="/transactions/" + (offset - stepSize)) Previous
+    .col-md-1.pull-right
+      a.btn.btn-default(href="/transactions/" + (offset + stepSize)) Next
             
   
